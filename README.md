@@ -1,8 +1,23 @@
-# project-name
+# aizero
 
-Remember to:
+> Learning AI from zero.
 
-1. Replace all instances of `project-name` with the real name of the project
-2. Rename the source code folder from `project_name` to something more fitting
-3. Generate a lock file
-4. Rewrite the `README.md`
+## Modules
+
+- [grad](./src/grad)
+
+## Setup
+
+Install virtualenv and packages:
+
+```bash
+$ make install
+```
+
+## Test
+
+Run tests:
+
+```bash
+$ make test
+```

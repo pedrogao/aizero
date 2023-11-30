@@ -1,6 +1,6 @@
 # Inspired by: https://blog.mathieu-leplatre.info/tips-for-your-makefile-with-python.html
 
-PYMODULE := project_name
+PYMODULE := aizero
 TESTS := tests
 INSTALL_STAMP := .install.stamp
 POETRY := $(shell command -v poetry 2> /dev/null)
@@ -18,6 +18,8 @@ help:
 	@echo "  install     install packages and prepare environment"
 	@echo "  lint        run the code linters"
 	@echo "  test        run all the tests"
+	@echo "  shell       start a shell in the virtual environment"
+	@echo "  run         run the app"
 	@echo "  all         install, lint, and test the project"
 	@echo "  clean       remove all temporary files listed in .gitignore"
 	@echo ""
@@ -49,3 +51,13 @@ test: $(INSTALL_STAMP)
 clean:
     # Delete all files in .gitignore
 	git clean -Xdf
+
+.PHONY: shell
+shell: $(INSTALL_STAMP)
+		# Start a shell in the virtual environment
+	$(POETRY) shell
+
+.PHONY: run
+run: $(INSTALL_STAMP)
+		# Run the project
+	$(POETRY) run python -m $(PYMODULE)
