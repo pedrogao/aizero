@@ -35,3 +35,62 @@ class SquareTest(unittest.TestCase):
         num_grad = numerical_diff(square, x)
         flg = np.allclose(x.grad, num_grad)
         self.assertTrue(flg)
+
+    def test_add(self):
+        x0 = Variable(np.array(2))
+        x1 = Variable(np.array(3))
+        y = add(x0, x1)
+        self.assertEqual(y.data, np.array(5))
+
+
+class GradTest(unittest.TestCase):
+    def test_grad_same_variable_add(self):
+        x = Variable(np.array(3.0))
+        y = add(x, x)
+        y.backward()
+        self.assertEqual(x.grad, np.array(2.0))
+
+    def test_grad_same_variable_add2(self):
+        x = Variable(np.array(3.0))
+        y = add(x, add(x, x))
+        y.backward()
+        self.assertEqual(x.grad, np.array(3.0))
+
+
+class NoGradTest(unittest.TestCase):
+    def test_no_grad(self):
+        with no_grad():
+            x = Variable(np.array(3.0))
+            y = square(x)
+        self.assertIsNone(x.grad)
+        self.assertIsNone(y.grad)
+
+    def test_no_grad2(self):
+        x = Variable(np.array(3.0))
+        with no_grad():
+            y = square(x)
+        self.assertIsNone(x.grad)
+        self.assertIsNone(y.grad)
+
+    def test_no_grad3(self):
+        x = Variable(np.array(3.0))
+        y = square(x)
+        with no_grad():
+            y.backward()
+        self.assertEqual(x.grad, np.array(6.0))
+
+
+class VariablePropertyTest(unittest.TestCase):
+    def test_property(self):
+        x = Variable(np.array(3.0))
+        self.assertEqual(x.shape, ())
+        self.assertEqual(x.ndim, 0)
+        self.assertEqual(x.size, 1)
+        self.assertEqual(x.dtype, np.float64)
+
+    def test_property2(self):
+        x = Variable(np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]))
+        self.assertEqual(x.shape, (2, 3))
+        self.assertEqual(x.ndim, 2)
+        self.assertEqual(x.size, 6)
+        self.assertEqual(x.dtype, np.float64)
