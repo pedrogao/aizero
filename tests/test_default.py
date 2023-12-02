@@ -67,21 +67,21 @@ class ComplexFunctionTest(unittest.TestCase):
         y = Variable(np.array(1.0))
         z = sphere(x, y)
         z.backward()
-        self.assertEqual(x.grad, 2)
-        self.assertEqual(y.grad, 2)
+        self.assertEqual(x.grad.data, 2)
+        self.assertEqual(y.grad.data, 2)
 
     def test_matyas(self):
         x = Variable(np.array(1.0))
         y = Variable(np.array(1.0))
         z = matyas(x, y)
         z.backward()
-        self.assertEqual(x.grad, 0.040000000000000036)
-        self.assertEqual(y.grad, 0.040000000000000036)
+        self.assertEqual(x.grad.data, 0.040000000000000036)
+        self.assertEqual(y.grad.data, 0.040000000000000036)
 
     def test_goldstein(self):
         x = Variable(np.array(1.0))
         y = Variable(np.array(1.0))
         z = goldstein(x, y)
         z.backward()
-        self.assertEqual(x.grad, -5376.0)
-        self.assertEqual(y.grad, 8064.0)
+        self.assertEqual(x.grad.data, -5376.0)
+        self.assertEqual(y.grad.data, 8064.0)
