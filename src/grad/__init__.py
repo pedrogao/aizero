@@ -1,14 +1,14 @@
+"""
+__init__.py
+
+`grad` is a simple autograd engine.
+"""
+
 is_simple_core = True
 
 if is_simple_core:
-    from .core_simple import Variable
-    from .core_simple import Function
-    from .core_simple import using_config
-    from .core_simple import no_grad
-    from .core_simple import as_array
-    from .core_simple import as_variable
-    from .core_simple import setup_variable
+    from grad.core_simple import Function, Variable, as_array, as_variable, no_grad, setup_variable, using_config
 else:
-    from .core import *
+    from grad.core import *
 
 setup_variable()

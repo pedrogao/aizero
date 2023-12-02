@@ -1,6 +1,13 @@
-import numpy as np
-import weakref
+"""
+core.simple.py
+
+Simple core functions for the grad package.
+"""
+
 import contextlib
+import weakref
+
+import numpy as np
 
 
 class Config:
@@ -136,10 +143,10 @@ class Function:
         return outputs if len(outputs) > 1 else outputs[0]
 
     def forward(self, xs):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def backward(self, gys):
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class Add(Function):

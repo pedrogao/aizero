@@ -1,6 +1,6 @@
 # Inspired by: https://blog.mathieu-leplatre.info/tips-for-your-makefile-with-python.html
 
-PYMODULE := aizero
+PYMODULE := src/grad
 TESTS := tests
 INSTALL_STAMP := .install.stamp
 POETRY := $(shell command -v poetry 2> /dev/null)
@@ -56,8 +56,3 @@ clean:
 shell: $(INSTALL_STAMP)
 		# Start a shell in the virtual environment
 	$(POETRY) shell
-
-.PHONY: run
-run: $(INSTALL_STAMP)
-		# Run the project
-	$(POETRY) run python -m $(PYMODULE)
