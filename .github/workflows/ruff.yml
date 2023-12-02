@@ -2,11 +2,10 @@
 
 name: Ruff
 
-# TODO - not run this round
-# on:
-#   push:
-#     branches:
-#       - '**'
+on:
+  push:
+    branches:
+      - 'main'
 
 permissions:
   contents: write
