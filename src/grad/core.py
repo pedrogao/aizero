@@ -7,6 +7,7 @@ import contextlib
 import weakref
 
 import numpy as np
+import grad
 
 
 class Config:
@@ -72,6 +73,21 @@ class Variable:
 
     def cleargrad(self):
         self.grad = None
+
+    def reshape(self, *shape):
+        if len(shape) == 1 and isinstance(shape[0], (tuple, list)):
+            shape = shape[0]
+        return grad.functions.reshape(self, shape)
+
+    def transpose(self):
+        return grad.functions.transpose(self)
+
+    @property
+    def T(self):
+        return self.transpose()
+
+    def sum(self, axis=None, keepdims=False):
+        return grad.functions.sum(self, axis, keepdims)
 
     def backward(self, retain_grad=False, create_graph=False):
         if self.grad is None:
@@ -152,11 +168,16 @@ class Function:
 
 class Add(Function):
     def forward(self, x0, x1):
+        self.x0_shape, self.x1_shape = x0.shape, x1.shape
         y = x0 + x1
         return y
 
     def backward(self, gy):
-        return gy, gy
+        gx0, gx1 = gy, gy
+        if self.x0_shape != self.x1_shape:
+            gx0 = grad.functions.sum_to(gx0, self.x0_shape)
+            gx1 = grad.functions.sum_to(gx1, self.x1_shape)
+        return gx0, gx1
 
 
 def add(x0, x1):

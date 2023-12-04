@@ -11,4 +11,7 @@ if is_simple_core:
 else:
     from grad.core import Function, Variable, as_array, as_variable, no_grad, setup_variable, using_config
 
+    import grad.functions
+    import grad.utils
+
 setup_variable()
