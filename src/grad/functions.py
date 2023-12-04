@@ -210,6 +210,26 @@ def mean_squared_error(x0, x1):
     return MeanSquaredError()(x0, x1)
 
 
+class Clip(Function):
+    def __init__(self, x_min, x_max):
+        self.x_min = x_min
+        self.x_max = x_max
+
+    def forward(self, x):
+        y = x.clip(x, self.x_min, self.x_max)
+        return y
+
+    def backward(self, gy):
+        x, = self.inputs
+        mask = (x.data >= self.x_min) * (x.data <= self.x_max)
+        gx = gy * mask
+        return gx
+
+
+def clip(x, x_min, x_max):
+    return Clip(x_min, x_max)(x)
+
+
 def linear(x, W, b=None):
     t = matmul(x, W)
     if b is None:
@@ -223,4 +243,23 @@ def linear(x, W, b=None):
 def sigmoid(x):
     x = as_variable(x)
     y = 1 / (1 + exp(-x))
+    return y
+
+
+def softmax(x, axis=1):
+    x = as_variable(x)
+    y = exp(x)
+    sum_y = sum(y, axis=axis, keepdims=True)
+    return y / sum_y
+
+
+def softmax_cross_entropy(x, t):
+    x, t = as_variable(x), as_variable(t)
+    N = x.shape[0]
+
+    p = softmax(x)
+    p = clip(p, 1e-15, 1.0)  # To avoid log(0)
+    log_p = log(p)
+    tlog_p = log_p[np.arange(N), t.data]
+    y = -1 * sum(tlog_p) / N
     return y

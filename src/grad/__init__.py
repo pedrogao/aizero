@@ -10,6 +10,8 @@ if is_simple_core:
     from grad.core_simple import Function, Variable, as_array, as_variable, no_grad, setup_variable, using_config
 else:
     from grad.core import Function, Variable, as_array, as_variable, no_grad, setup_variable, using_config
+    from grad.layers import Layer
+    from grad.models import Model
 
     import grad.functions
     import grad.utils
