@@ -230,6 +230,22 @@ def clip(x, x_min, x_max):
     return Clip(x_min, x_max)(x)
 
 
+class ReLU(Function):
+    def forward(self, x):
+        y = np.maximum(x, 0.0)
+        return y
+
+    def backward(self, gy):
+        x, = self.inputs
+        mask = x.data > 0
+        gx = gy * mask
+        return gx
+
+
+def relu(x):
+    return ReLU()(x)
+
+
 def linear(x, W, b=None):
     t = matmul(x, W)
     if b is None:

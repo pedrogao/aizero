@@ -15,5 +15,8 @@ else:
 
     import grad.functions
     import grad.utils
+    import grad.optimizers
+    import grad.dataloaders
+    import grad.datasets
 
 setup_variable()
