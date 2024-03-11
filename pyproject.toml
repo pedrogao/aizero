@@ -60,7 +60,7 @@ autopep8 = "^2.0.4"
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = '^1.8.0'
+mypy = '^1.9.0'
 
 
 [tool.poetry.group.linters]
